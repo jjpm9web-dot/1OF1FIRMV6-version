@@ -415,12 +415,17 @@ export default function AdminUniversePanel() {
         {/* DRIP Products */}
         {activeSection === "drip" && dripProducts.map((product) => (
           <div key={product.id} className="flex items-center gap-3 p-2 sm:p-3 bg-white/5 rounded-lg border border-white/10">
-            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-lg overflow-hidden bg-white/10 flex-shrink-0">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-lg overflow-hidden bg-white/10 flex-shrink-0 relative">
               {product.mainImage ? (
                 <img src={product.mainImage} alt={product.name} className="w-full h-full object-cover" />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
                   <ImageIcon className="w-6 h-6 text-white/30" />
+                </div>
+              )}
+              {product.soldOut && (
+                <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                  <span className="text-red-500 text-[7px] sm:text-[8px] font-bold tracking-wider">SOLD OUT</span>
                 </div>
               )}
             </div>
@@ -431,6 +436,13 @@ export default function AdminUniversePanel() {
               <p className="text-white/30 text-[9px]">{product.drop} - Tallas: {product.sizes.join(", ")}</p>
             </div>
             <div className="flex gap-1">
+              <button
+                onClick={() => updateDrip({ ...product, soldOut: !product.soldOut })}
+                className={`p-1.5 rounded-lg transition-colors ${product.soldOut ? "text-red-500 bg-red-500/10 hover:bg-red-500/20" : "text-white/40 hover:text-red-400 hover:bg-red-500/10"}`}
+                title={product.soldOut ? "Desactivar SOLD OUT" : "Activar SOLD OUT"}
+              >
+                <span className="text-[8px] sm:text-[9px] font-bold tracking-wider">SOLD</span>
+              </button>
               <button onClick={() => openEditModal(product)} className="p-1.5 text-white/50 hover:text-purple-400 transition-colors">
                 <Edit3 className="w-3.5 h-3.5" />
               </button>
@@ -444,12 +456,17 @@ export default function AdminUniversePanel() {
         {/* VISION Artworks */}
         {activeSection === "vision" && visionArtworks.map((artwork) => (
           <div key={artwork.id} className="flex items-center gap-3 p-2 sm:p-3 bg-white/5 rounded-lg border border-white/10">
-            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-lg overflow-hidden bg-white/10 flex-shrink-0">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-lg overflow-hidden bg-white/10 flex-shrink-0 relative">
               {artwork.image ? (
                 <img src={artwork.image} alt={artwork.name} className="w-full h-full object-cover" />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
                   <ImageIcon className="w-6 h-6 text-white/30" />
+                </div>
+              )}
+              {!artwork.available && (
+                <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                  <span className="text-red-500 text-[7px] sm:text-[8px] font-bold tracking-wider">SOLD OUT</span>
                 </div>
               )}
             </div>
@@ -460,6 +477,13 @@ export default function AdminUniversePanel() {
               <p className="text-white/30 text-[9px]">#{artwork.number} / {artwork.totalEditions} ediciones - {artwork.available ? "Disponible" : "Agotado"}</p>
             </div>
             <div className="flex gap-1">
+              <button
+                onClick={() => updateVision({ ...artwork, available: !artwork.available })}
+                className={`p-1.5 rounded-lg transition-colors ${!artwork.available ? "text-red-500 bg-red-500/10 hover:bg-red-500/20" : "text-white/40 hover:text-red-400 hover:bg-red-500/10"}`}
+                title={!artwork.available ? "Marcar como disponible" : "Marcar como SOLD OUT"}
+              >
+                <span className="text-[8px] sm:text-[9px] font-bold tracking-wider">SOLD</span>
+              </button>
               <button onClick={() => openEditModal(artwork)} className="p-1.5 text-white/50 hover:text-purple-400 transition-colors">
                 <Edit3 className="w-3.5 h-3.5" />
               </button>
@@ -473,11 +497,16 @@ export default function AdminUniversePanel() {
         {/* CAMP Info */}
         {activeSection === "camp" && camps.map((camp) => (
           <div key={camp.id} className="flex items-center gap-3 p-2 sm:p-3 bg-white/5 rounded-lg border border-white/10">
-            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-lg bg-purple-500/20 flex items-center justify-center flex-shrink-0 overflow-hidden">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-lg bg-purple-500/20 flex items-center justify-center flex-shrink-0 overflow-hidden relative">
               {camp.image ? (
                 <img src={camp.image} alt={`Camp ${camp.number}`} className="w-full h-full object-cover" />
               ) : (
                 <span className="text-purple-400 text-lg sm:text-xl font-bold">{camp.number}</span>
+              )}
+              {camp.soldOut && (
+                <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                  <span className="text-red-500 text-[7px] sm:text-[8px] font-bold tracking-wider">SOLD OUT</span>
+                </div>
               )}
             </div>
             <div className="flex-1 min-w-0">
@@ -487,6 +516,13 @@ export default function AdminUniversePanel() {
               {camp.description && <p className="text-white/30 text-[9px] truncate">{camp.description}</p>}
             </div>
             <div className="flex gap-1">
+              <button
+                onClick={() => updateCamp({ ...camp, soldOut: !camp.soldOut })}
+                className={`p-1.5 rounded-lg transition-colors ${camp.soldOut ? "text-red-500 bg-red-500/10 hover:bg-red-500/20" : "text-white/40 hover:text-red-400 hover:bg-red-500/10"}`}
+                title={camp.soldOut ? "Desactivar SOLD OUT" : "Activar SOLD OUT"}
+              >
+                <span className="text-[8px] sm:text-[9px] font-bold tracking-wider">SOLD</span>
+              </button>
               <button onClick={() => openEditModal(camp)} className="p-1.5 text-white/50 hover:text-purple-400 transition-colors">
                 <Edit3 className="w-3.5 h-3.5" />
               </button>
@@ -500,12 +536,17 @@ export default function AdminUniversePanel() {
         {/* MAISON Products */}
         {activeSection === "maison" && maisonProducts.map((product) => (
           <div key={product.id} className="flex items-center gap-3 p-2 sm:p-3 bg-white/5 rounded-lg border border-white/10">
-            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-lg overflow-hidden bg-white/10 flex-shrink-0">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-lg overflow-hidden bg-white/10 flex-shrink-0 relative">
               {product.image ? (
                 <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
                   <ImageIcon className="w-6 h-6 text-white/30" />
+                </div>
+              )}
+              {product.soldOut && (
+                <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                  <span className="text-red-500 text-[7px] sm:text-[8px] font-bold tracking-wider">SOLD OUT</span>
                 </div>
               )}
             </div>
@@ -519,6 +560,13 @@ export default function AdminUniversePanel() {
               <p className="text-white/30 text-[9px]">Edicion: {product.edition}</p>
             </div>
             <div className="flex gap-1">
+              <button
+                onClick={() => updateMaison({ ...product, soldOut: !product.soldOut })}
+                className={`p-1.5 rounded-lg transition-colors ${product.soldOut ? "text-red-500 bg-red-500/10 hover:bg-red-500/20" : "text-white/40 hover:text-red-400 hover:bg-red-500/10"}`}
+                title={product.soldOut ? "Desactivar SOLD OUT" : "Activar SOLD OUT"}
+              >
+                <span className="text-[8px] sm:text-[9px] font-bold tracking-wider">SOLD</span>
+              </button>
               <button onClick={() => openEditModal(product)} className="p-1.5 text-white/50 hover:text-purple-400 transition-colors">
                 <Edit3 className="w-3.5 h-3.5" />
               </button>

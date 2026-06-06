@@ -177,6 +177,11 @@ export default function MaisonSwimDetail({ onNavigate }: MaisonSwimDetailProps) 
                   alt={product.name}
                   className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                 />
+                {product.soldOut && (
+                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                    <span className="bg-red-600 text-white text-[10px] md:text-sm font-bold tracking-wider px-2 md:px-4 py-1 rotate-[-12deg]">SOLD OUT</span>
+                  </div>
+                )}
               </div>
               
               {/* Product Info */}
@@ -186,14 +191,20 @@ export default function MaisonSwimDetail({ onNavigate }: MaisonSwimDetailProps) 
                 <p className="text-xs md:text-sm mt-1 md:mt-2">${product.price.toFixed(2)} COP</p>
                 
                 {/* Buy Button */}
-                <button
-                  onClick={() => handleWhatsAppBuy(product)}
-                  className="w-full mt-2 md:mt-3 flex items-center justify-center gap-1.5 md:gap-2 bg-zinc-800 hover:bg-zinc-700 border border-white/10 rounded-full py-2 md:py-2.5 text-[10px] md:text-xs tracking-wider transition-colors"
-                >
-                  <WhatsAppIcon />
-                  <span className="hidden sm:inline">BUY ON WHATSAPP</span>
-                  <span className="sm:hidden">COMPRAR</span>
-                </button>
+                {product.soldOut ? (
+                  <div className="w-full mt-2 md:mt-3 flex items-center justify-center bg-red-600/10 border border-red-600/50 text-red-500 rounded-full py-2 md:py-2.5 text-[10px] md:text-xs tracking-wider cursor-not-allowed">
+                    SOLD OUT
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => handleWhatsAppBuy(product)}
+                    className="w-full mt-2 md:mt-3 flex items-center justify-center gap-1.5 md:gap-2 bg-zinc-800 hover:bg-zinc-700 border border-white/10 rounded-full py-2 md:py-2.5 text-[10px] md:text-xs tracking-wider transition-colors"
+                  >
+                    <WhatsAppIcon />
+                    <span className="hidden sm:inline">BUY ON WHATSAPP</span>
+                    <span className="sm:hidden">COMPRAR</span>
+                  </button>
+                )}
               </div>
             </div>
           ))}

@@ -50,6 +50,11 @@ function ArtworkCard({ artwork, onImageClick }: { artwork: VisionArtwork; onImag
             alt={artwork.name}
             className="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
           />
+          {!artwork.available && (
+            <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+              <span className="bg-red-600 text-white text-xs md:text-base font-bold tracking-wider px-3 md:px-5 py-1 md:py-1.5 rotate-[-12deg]">SOLD OUT</span>
+            </div>
+          )}
         </div>
       </div>
 
@@ -59,16 +64,22 @@ function ArtworkCard({ artwork, onImageClick }: { artwork: VisionArtwork; onImag
       <p className="text-white text-xs md:text-sm mb-2 md:mb-4">${artwork.price.toFixed(2)} {artwork.currency}</p>
 
       {/* Buy Button */}
-      <a 
-        href={whatsappLink}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex items-center justify-center gap-2 md:gap-3 w-full py-2 md:py-3 bg-neutral-900 border border-neutral-700 text-white text-[10px] md:text-xs tracking-[0.1em] md:tracking-[0.15em] hover:bg-neutral-800 hover:border-amber-500/50 transition-all duration-300"
-      >
-        <WhatsAppIcon />
-        <span className="hidden sm:inline">BUY ON WHATSAPP</span>
-        <span className="sm:hidden">COMPRAR</span>
-      </a>
+      {artwork.available ? (
+        <a 
+          href={whatsappLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center gap-2 md:gap-3 w-full py-2 md:py-3 bg-neutral-900 border border-neutral-700 text-white text-[10px] md:text-xs tracking-[0.1em] md:tracking-[0.15em] hover:bg-neutral-800 hover:border-amber-500/50 transition-all duration-300"
+        >
+          <WhatsAppIcon />
+          <span className="hidden sm:inline">BUY ON WHATSAPP</span>
+          <span className="sm:hidden">COMPRAR</span>
+        </a>
+      ) : (
+        <div className="flex items-center justify-center w-full py-2 md:py-3 bg-red-600/10 border border-red-600/50 text-red-500 text-[10px] md:text-xs tracking-[0.15em] cursor-not-allowed">
+          SOLD OUT
+        </div>
+      )}
     </div>
   )
 }

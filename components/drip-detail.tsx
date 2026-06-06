@@ -25,6 +25,11 @@ function ProductCard({ product, onClick }: { product: DripProduct; onClick: () =
         <span className="absolute top-2 left-2 md:top-4 md:left-4 text-white/60 text-[10px] md:text-xs tracking-[0.2em]">
           {product.drop}
         </span>
+        {product.soldOut && (
+          <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+            <span className="bg-red-600 text-white text-xs md:text-base font-bold tracking-wider px-3 md:px-5 py-1 md:py-1.5 rotate-[-12deg]">SOLD OUT</span>
+          </div>
+        )}
       </div>
       <h3 className="text-white text-sm md:text-lg tracking-wide font-light mb-1 line-clamp-2">{product.name}</h3>
       <p className="text-white/50 text-[10px] md:text-xs tracking-wider mb-2">{product.colorway}</p>
@@ -55,6 +60,11 @@ function ProductDetail({ product, onBack }: { product: DripProduct; onBack: () =
           className="w-full h-full object-cover object-top"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
+        {product.soldOut && (
+          <div className="absolute top-4 right-4 bg-red-600 text-white text-sm md:text-lg font-bold tracking-wider px-4 md:px-6 py-1.5 md:py-2 rotate-[-6deg]">
+            SOLD OUT
+          </div>
+        )}
       </div>
 
       {/* Product Info */}
@@ -91,21 +101,27 @@ function ProductDetail({ product, onBack }: { product: DripProduct; onBack: () =
         </div>
 
         {/* Buy Button */}
-        <a 
-          href={`https://wa.me/573003676521?text=${encodeURIComponent(
-            `Hola! Estoy interesado en el producto:\n\n` +
-            `*${product.name}*\n` +
-            `Color: ${product.colorway}\n` +
-            `Precio: ${product.price.toLocaleString('es-CO')} COP\n` +
-            (selectedSize ? `Talla: ${selectedSize}\n` : '') +
-            `\n¿Está disponible?`
-          )}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block w-full md:max-w-md py-4 border border-white/30 text-white text-sm tracking-[0.2em] hover:bg-white hover:text-black transition-all duration-300 text-center"
-        >
-          BUY
-        </a>
+        {product.soldOut ? (
+          <div className="block w-full md:max-w-md py-4 border border-red-600/50 bg-red-600/10 text-red-500 text-sm tracking-[0.2em] text-center cursor-not-allowed">
+            SOLD OUT
+          </div>
+        ) : (
+          <a 
+            href={`https://wa.me/573003676521?text=${encodeURIComponent(
+              `Hola! Estoy interesado en el producto:\n\n` +
+              `*${product.name}*\n` +
+              `Color: ${product.colorway}\n` +
+              `Precio: ${product.price.toLocaleString('es-CO')} COP\n` +
+              (selectedSize ? `Talla: ${selectedSize}\n` : '') +
+              `\n¿Está disponible?`
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block w-full md:max-w-md py-4 border border-white/30 text-white text-sm tracking-[0.2em] hover:bg-white hover:text-black transition-all duration-300 text-center"
+          >
+            BUY
+          </a>
+        )}
 
         {/* Gallery */}
         {product.galleryImages.length > 0 && (

@@ -12,6 +12,7 @@ export interface DripProduct {
   sizes: string[]
   mainImage: string
   galleryImages: string[]
+  soldOut?: boolean
 }
 
 export interface VisionArtwork {
@@ -34,6 +35,7 @@ export interface CampInfo {
   location: string
   description?: string
   image?: string
+  soldOut?: boolean
 }
 
 export interface MaisonProduct {
@@ -45,6 +47,7 @@ export interface MaisonProduct {
   badge: string
   image: string
   description?: string
+  soldOut?: boolean
 }
 
 export interface BackstageContent {

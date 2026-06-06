@@ -108,9 +108,14 @@ export default function CampDetail({ onNavigate }: CampDetailProps) {
               <span className="text-amber-500 text-xl md:text-3xl font-light">{camp.number}</span>
               <div className="flex-1">
                 <div className="border-l-2 border-amber-500/50 pl-4 md:pl-6">
-                  <h3 className="text-lg md:text-4xl font-light tracking-wider mb-1 md:mb-2" style={{ fontFamily: "serif" }}>
-                    {camp.dates}
-                  </h3>
+                  <div className="flex items-center gap-2 md:gap-3 flex-wrap">
+                    <h3 className="text-lg md:text-4xl font-light tracking-wider mb-1 md:mb-2" style={{ fontFamily: "serif" }}>
+                      {camp.dates}
+                    </h3>
+                    {camp.soldOut && (
+                      <span className="bg-red-600 text-white text-[9px] md:text-xs font-bold tracking-wider px-2 md:px-3 py-0.5 md:py-1">SOLD OUT</span>
+                    )}
+                  </div>
                   <p className="text-white/50 text-[10px] md:text-xs tracking-[0.2em]">{camp.location}</p>
                 </div>
               </div>
